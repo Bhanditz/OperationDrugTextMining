@@ -1,5 +1,5 @@
 #*************************************************
-#Drug/SideEffectIdentifier                       *
+#AutomatedDrug-SideEffectIdentifier              *
 #Authors: Luis Franco, Delroy Fong               *
 #Supervisers: Dr. Feng Cheng, Dr. Yicheng Tu     *
 #*************************************************
@@ -16,11 +16,26 @@ library(ggplot2)
 library(plyr)
 library(tidytext)
 library(dplyr)
+library(XML)
+library(xml2)
 require(sqldf)
 
+
+page <- read_html("https://answers.search.yahoo.com/search;_ylt=AwrC0wxqPQ9aE2YAmApPmolQ;_ylc=X1MDMTM1MTE5NTIxNQRfcgMyBGZyA3VoM19hbnN3ZXJzX3ZlcnRfZ3MEZ3ByaWQDaWhjNkhNTDVTME8xQXB1QTVDaG94QQRuX3JzbHQDMARuX3N1Z2cDMQRvcmlnaW4DYW5zd2Vycy5zZWFyY2gueWFob28uY29tBHBvcwMwBHBxc3RyAwRwcXN0cmwDBHFzdHJsAzI3BHF1ZXJ5A3BlbmljaWxsaW4lMjBzaWRlJTIwZWZmZWN0cwR0X3N0bXADMTUxMDk0ODIxNQ--?p=penicillin+side+effects&fr2=sb-top-answers.search&fr=uh3_answers_vert_gs&type=2button")
+
+urlList <- page %>% html_nodes(".fz-m") %>% html_attr('href')
+titleV = NULL
+realV = NULL
+for (i in 1:(length(urlList)-1))
+{
+  QuestPage <- read_html(urlList[i])
+  titleV[i] <- QuestPage %>% html_nodes("title") %>% html_text("title")
+  realV[i] <- QuestPage %>% html_node(".ya-q-full-text") %>% html_text("text")
+}
+
 #Read in the question subject and full question
-titleV <- readLines("C:/Users/Luisman/Desktop/USF FOLDERS/Fall 2017/CIS 4900 Independent Study in CS/DrugTextAnalysisFiles/Questions.txt")  
-realV <- readLines("C:/Users/Luisman/Desktop/NewTest.txt")  
+#titleV <- readLines("C:/Users/Luisman/Desktop/USF FOLDERS/Fall 2017/CIS 4900 Independent Study in CS/DrugTextAnalysisFiles/Questions.txt")  
+#realV <- readLines("C:/Users/Luisman/Desktop/NewTest.txt")  
 
 #The full question
 QuestionV = NULL
@@ -30,6 +45,8 @@ QuestionV = paste(titleV,realV,sep = " | ")
 for (i in 1:length(QuestionV))
   QuestionV[i] <- sapply(QuestionV[i],tolower)
 
+QuestionV <- gsub("\\n","",QuestionV)
+QuestionV <- gsub("\\r","",QuestionV)
 
 #Reads in possible sideeffects
 sideeffectsV <- readLines("C:/Users/Luisman/Desktop/BigDataSideEffects.txt")                                 
@@ -123,7 +140,4 @@ DrugFreq <- sqldf("select Drug,Count(*)as Frequency from CleanData2 group by Dru
 
 TopTenSideEffects <- sqldf("select * from SideEffectFreq limit 10")
 barplot(TopTenSideEffects$Frequency, main = "Top Ten Side Effects",ylab= "Frequency",names.arg=TopTenSideEffects$SideEffect,col="darkblue",las=2)
-
-TopTenDrugs <- sqldf("select * from DrugFreq limit 10")
-barplot(TopTenDrugs$Frequency, main = "Top Ten Drugs",ylab= "Frequency",names.arg=TopTenDrugs$Drug,col="darkblue",las=2)
 
