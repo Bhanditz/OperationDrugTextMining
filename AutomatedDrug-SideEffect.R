@@ -20,15 +20,37 @@ library(XML)
 library(xml2)
 require(sqldf)
 
+pg_alive = TRUE
+user_url <- readline(prompt="Please enter the Yahoo! Answers search url:\n")
 
-page <- read_html("https://answers.search.yahoo.com/search;_ylt=AwrC0wxqPQ9aE2YAmApPmolQ;_ylc=X1MDMTM1MTE5NTIxNQRfcgMyBGZyA3VoM19hbnN3ZXJzX3ZlcnRfZ3MEZ3ByaWQDaWhjNkhNTDVTME8xQXB1QTVDaG94QQRuX3JzbHQDMARuX3N1Z2cDMQRvcmlnaW4DYW5zd2Vycy5zZWFyY2gueWFob28uY29tBHBvcwMwBHBxc3RyAwRwcXN0cmwDBHFzdHJsAzI3BHF1ZXJ5A3BlbmljaWxsaW4lMjBzaWRlJTIwZWZmZWN0cwR0X3N0bXADMTUxMDk0ODIxNQ--?p=penicillin+side+effects&fr2=sb-top-answers.search&fr=uh3_answers_vert_gs&type=2button")
+page <- read_html(user_url)
+firstpglist<- page %>% html_nodes(".fz-m") %>% html_attr('href')
+firstpglist <- firstpglist[-length(firstpglist)]
+allpglist<- firstpglist
 
-urlList <- page %>% html_nodes(".fz-m") %>% html_attr('href')
+if (length(page) == 0){pg_alive=FALSE}
+curr_pg <- page
+while (pg_alive){
+  #get url of next pg
+  nextpg_url <- curr_pg %>% html_nodes("a.next") %>% html_attr('href')
+  if (length(nextpg_url) != 0)
+  {
+    nextpg <- read_html(nextpg_url)
+    # get urls listed on new pg and append to list
+    nextpg_list <- nextpg %>% html_nodes(".fz-m") %>% html_attr('href')
+    nextpg_list<- nextpg_list[-length(nextpg_list)]
+    allpglist <- c(allpglist,nextpg_list)
+    curr_pg <- nextpg
+  }
+  #checks if next button = 0, if true then no more next button left
+  if (length(nextpg_url) == 0){pg_alive=FALSE}
+} 
+
 titleV = NULL
 realV = NULL
-for (i in 1:(length(urlList)-1))
+for (i in 1:(length(allpglist)))
 {
-  QuestPage <- read_html(urlList[i])
+  QuestPage <- read_html(allpglist[i])
   titleV[i] <- QuestPage %>% html_nodes("title") %>% html_text("title")
   realV[i] <- QuestPage %>% html_node(".ya-q-full-text") %>% html_text("text")
 }
@@ -133,11 +155,24 @@ names(CleanData)[names(CleanData) == 'V2'] <- 'SideEffect'
 names(CleanData2)[names(CleanData2) == 'V1'] <- 'Question'
 names(CleanData2)[names(CleanData2) == 'V2'] <- 'Drug'
 
-
 SideEffectFreq <- sqldf("select SideEffect,Count(*)as Frequency from CleanData group by SideEffect order by Frequency desc")
 
 DrugFreq <- sqldf("select Drug,Count(*)as Frequency from CleanData2 group by Drug order by Frequency desc")
 
 TopTenSideEffects <- sqldf("select * from SideEffectFreq limit 10")
+
+
 barplot(TopTenSideEffects$Frequency, main = "Top Ten Side Effects",ylab= "Frequency",names.arg=TopTenSideEffects$SideEffect,col="darkblue",las=2)
+
+
+sink("SideEffectFreq.txt")
+print(SideEffectFreq)
+sink()
+
+sink("DrugFreq.txt")
+print(DrugFreq)
+sink()
+
+dev.copy(png,"TopTenSideEffectsChart.jpg")
+dev.off()
 
