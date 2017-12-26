@@ -17,7 +17,6 @@ for (i in 1:length(realV))
 {
   realV[i] <- sapply(realV[i],tolower)
   realV[i] <- sapply(realV[i],removeNumbers)
-  #realV[i] <- vapply(lapply(strsplit(realV[i]," "), unique),paste,character(1L), collapse = " ")
 }
 
 
@@ -30,28 +29,35 @@ SideEffectList = NULL
 for (i in 1:length(sideeffectsV))
 {
   sideeffectsV[i] <- sapply(sideeffectsV[i],tolower)
+  #sideeffectsV[i] <- gsub("\\s","++",sideeffectsV[i])
 }
+id=which(sideeffectsV=="tic")
+sideeffectsV=sideeffectsV[-id]
+#realV
+#sideeffectsV
+#h<- grep(sideeffectsV[3279],realV[1],value = TRUE)
+#h
 
-h<- grep(sideeffectsV[3279],realV[1],value = TRUE)
-h
 #Getting  the results from this loop
+SideEffectList=NULL
 for (i in 1:length(realV))
 {
 
   for (j in 1:length(sideeffectsV))
   {
-    id=grepl(sideeffectsV[j],realV[i],fixed = TRUE)
+     id=grepl(sideeffectsV[j],realV[i],fixed = TRUE)
       if (id)
       {
-        
-        SideEffectList[i]<- sideeffectsV[j] 
+        SideEffectList[i]<-sideeffectsV[j]
       }
+     
   }
 }
-Question <- readLines(realV[1])
-Question
-sideeffectsV
 SideEffectList
+SideEffectList<-SideEffectList[!is.na(SideEffectList)]
+SideEffectList
+#Method 2
+SideEffectList = NULL
 for (i in 1:length(realV))
 {
   Question <- strsplit(realV[i], " ")[[1]]
@@ -62,16 +68,16 @@ for (i in 1:length(realV))
   }
 }
 SideEffectList
-realV[1]
-isc = 0
-for (j in 1:length(sideeffectsV))
-{
-  if ('tic' %in% sideeffectsV[j])
-    isc <- j
-}
-isc
-SideEffectList
-realV[1]
+#realV[1]
+#isc = 0
+#for (j in 1:length(sideeffectsV))
+#{
+ # if ('tic' %in% sideeffectsV[j])
+ #   isc <- j
+#}
+#isc
+#SideEffectList
+#realV[1]
 #sideeffectsV <- paste(sideeffectsV,sep = ' ',collapse = ' ')                # <---- Change made here
 #sideeffectsV <- as.list(strsplit(sideeffectsV," "))  
 #sideeffectsV <- as.data.frame(sideeffectsV,header = FALSE)

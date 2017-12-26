@@ -1,0 +1,109 @@
+                      SideEffect Frequency
+1                           pain        30
+2                      infection        15
+3                        anxiety        11
+4                           ache         9
+5                     depression         9
+6                             vt         9
+7                        surgery         8
+8            atrial fibrillation         7
+9                       headache         7
+10                          scar         6
+11                         anger         5
+12                          burn         5
+13                      migraine         5
+14                        nausea         5
+15                    thrombosis         5
+16                         cough         4
+17              drug interaction         4
+18                          fall         4
+19                  panic attack         4
+20                          rash         4
+21                          acne         3
+22                   brown urine         2
+23                    chest pain         2
+24                        chills         2
+25                          coma         2
+26                  constipation         2
+27                   dehydration         2
+28              high cholesterol         2
+29              kidney infection         2
+30                         milia         2
+31                   mood swings         2
+32                      overdose         2
+33                     poisoning         2
+34                     pregnancy         2
+35                         shock         2
+36                      swelling         2
+37                      abortion         1
+38                      alopecia         1
+39                        anemic         1
+40                      aneurysm         1
+41                      anorexia         1
+42                anxiety attack         1
+43              anxiety disorder         1
+44                     arthritis         1
+45                        asthma         1
+46                     back pain         1
+47           bacterial infection         1
+48                     blindness         1
+49                 breast cancer         1
+50            breast enlargement         1
+51                  chronic pain         1
+52                      clotting         1
+53                        crying         1
+54          deep vein thrombosis         1
+55                      diabetic         1
+56                    drowsiness         1
+57                 ear infection         1
+58                        eczema         1
+59                      embolism         1
+60                       embolus         1
+61  excessive daytime sleepiness         1
+62                     fasciitis         1
+63                  feeling sick         1
+64                  fever chills         1
+65                  fibromyalgia         1
+66                           gas         1
+67                    gingivitis         1
+68                      glaucoma         1
+69                 hallucination         1
+70                  hypertension         1
+71                   infertility         1
+72                  inflammation         1
+73                      insomnia         1
+74                    laryngitis         1
+75                      leg pain         1
+76                   major bleed         1
+77              major depression         1
+78                       myalgia         1
+79                    narcolepsy         1
+80                     neuralgia         1
+81                      numbness         1
+82                   obstruction         1
+83                     oily skin         1
+84                  palpitations         1
+85              pelvic infection         1
+86                   pharyngitis         1
+87                          pica         1
+88             plantar fasciitis         1
+89                     pneumonia         1
+90                      priapism         1
+91                   pseudotumor         1
+92            pulmonary embolism         1
+93                          rage         1
+94                       scratch         1
+95                  short period         1
+96                       tension         1
+97                        thirst         1
+98              thyroid disorder         1
+99                      tinnitus         1
+100                       trauma         1
+101      urinary tract infection         1
+102            venous thrombosis         1
+103                      vertigo         1
+104                 vivid dreams         1
+105              water retention         1
+106                        worry         1
+107                        wound         1
+108              yeast infection         1
