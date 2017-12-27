@@ -1,0 +1,9 @@
+RealList
+dizzy
+nausea
+heartbreak
+indigestion
+CND
+?
+,
+.
